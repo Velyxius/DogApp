@@ -1,6 +1,6 @@
 package com.borjaapp.equipocinco.webservice
 
-import com.example.equipocinco.utils.Constants.BASE_URL
+import com.borjaapp.equipocinco.utils.Constants.BASE_URL
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
