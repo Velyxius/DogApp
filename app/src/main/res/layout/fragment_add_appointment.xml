@@ -7,7 +7,6 @@
         <variable
             name="viewModel"
             type="com.borjaapp.equipocinco.viewmodel.AppointmentViewModel" />
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -31,14 +30,12 @@
                 android:id="@+id/etId"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Nombre Mascota"
+                android:hint="@string/nombre_mascota"
                 android:inputType="number"
                 android:maxLength="4"
                 style="@style/TextInputEditTextStyle"
                 />
-
         </com.google.android.material.textfield.TextInputLayout>
-
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/etNameLayout"
@@ -50,13 +47,11 @@
                 android:id="@+id/etName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Raza"
+                android:hint="@string/raza"
                 android:maxLength="40"
                 style="@style/TextInputEditTextStyle"
                 />
-
         </com.google.android.material.textfield.TextInputLayout>
-
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/etPriceLayout"
@@ -68,14 +63,12 @@
                 android:id="@+id/etPrice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Dueño"
+                android:hint="@string/propietario"
                 android:inputType="number"
                 android:maxLength="20"
                 style="@style/TextInputEditTextStyle"
                 />
-
         </com.google.android.material.textfield.TextInputLayout>
-
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/etQuantityLayout"
@@ -89,17 +82,16 @@
                 style="@style/TextInputEditTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Teléfono"
+                android:hint="@string/owner_phone"
                 android:inputType="number"
                 android:maxLength="4" />
-
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/etSintomasLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@id/etPriceLayout"
+            app:layout_constraintTop_toBottomOf="@id/etQuantityLayout"
             style="@style/TextInputLayoutStyle">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -107,10 +99,9 @@
                 style="@style/TextInputEditTextStyle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Síntomas"
+                android:hint="@string/sintomas"
                 android:inputType="number"
                 android:maxLength="4" />
-
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
@@ -126,8 +117,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.6"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etQuantityLayout" />
-
+            app:layout_constraintTop_toBottomOf="@+id/etSintomasLayout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
