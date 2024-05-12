@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">equipoCinco</string>
+    <string name="app_name">DogApp</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="home_appointment_manager">Home Administrador de Citas con img Perrito</string>
     <string name="nombreMascota">nombreDeLaMascotica</string>
