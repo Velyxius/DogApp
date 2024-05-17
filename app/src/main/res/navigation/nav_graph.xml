@@ -4,30 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
     app:startDestination="@id/homeAppointmentFragment">
+
     <fragment
         android:id="@+id/homeAppointmentFragment"
         android:name="com.borjaapp.equipocinco.view.fragment.HomeAppointmentFragment"
-        android:label="HomeAppointmentFragment" >
+        android:label="fragment_home_appointment"
+        tools:layout="@layout/fragment_home_appointment" >
         <action
-            android:id="@+id/action_homeAppointmentFragment_to_addAppointmentFragment2"
-            app:destination="@id/addAppointmentFragment2" />
-        <action
-            android:id="@+id/action_homeAppointmentFragment_to_detailsAppointmentFragment"
+            android:id="@+id/action_homeAppointmentFragment_to_appointmentDetailsFragment"
             app:destination="@id/detailsAppointmentFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/addAppointmentFragment2"
-        android:name="com.borjaapp.equipocinco.view.fragment.AddAppointmentFragment"
-        android:label="fragment_add_appointment"
-        tools:layout="@layout/fragment_add_appointment" />
-    <fragment
-        android:id="@+id/editAppointmentFragment"
-        android:name="com.borjaapp.equipocinco.view.fragment.EditAppointmentFragment"
-        android:label="fragment_edit_appointment"
-        tools:layout="@layout/fragment_edit_appointment" >
         <action
-            android:id="@+id/action_editAppointmentFragment_to_homeAppointmentFragment"
-            app:destination="@id/homeAppointmentFragment" />
+            android:id="@+id/action_homeAppointmentFragment_to_addAppointmentFragment"
+            app:destination="@id/addAppointmentFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailsAppointmentFragment"
@@ -38,4 +26,23 @@
             android:id="@+id/action_detailsAppointmentFragment_to_editAppointmentFragment"
             app:destination="@id/editAppointmentFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/editAppointmentFragment"
+        android:name="com.borjaapp.equipocinco.view.fragment.EditAppointmentFragment"
+        android:label="fragment_edit_appointment"
+        tools:layout="@layout/fragment_edit_appointment" >
+        <action
+            android:id="@+id/action_editAppointmentFragment_to_homeAppointmentFragment"
+            app:destination="@id/homeAppointmentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addAppointmentFragment"
+        android:name="com.borjaapp.equipocinco.view.fragment.AddAppointmentFragment"
+        android:label="fragment_add_appointment"
+        tools:layout="@layout/fragment_add_appointment" >
+        <action
+            android:id="@+id/action_addAppointmentFragment_to_homeAppointmentFragment"
+            app:destination="@id/homeAppointmentFragment" />
+    </fragment>
+
 </navigation>

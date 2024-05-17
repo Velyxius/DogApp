@@ -1,91 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingHorizontal="20dp"
         android:paddingVertical="5dp">
-
         <androidx.cardview.widget.CardView
-            android:id="@+id/cvAppointment"
-            android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:foreground="?selectableItemBackground"
-            android:backgroundTint="@color/white"
-            card_view:cardCornerRadius="10dp"
-            android:elevation="8dp"
-            card_view:layout_constraintStart_toStartOf="parent"
-            card_view:layout_constraintTop_toTopOf="parent"
-            card_view:layout_constraintEnd_toEndOf="parent">
+            android:layout_margin="8dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="4dp">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="10dp">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="16dp">
 
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/imageView_PhotoUrl"
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
+                    app:shapeAppearanceOverlay="@style/circularShape"
+                    app:srcCompat="@drawable/job"
+                    android:scaleType="centerCrop"
+                    android:layout_marginEnd="16dp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvPetName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Pet Name"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvSymptoms"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="Symptom" />
+
+                </LinearLayout>
 
                 <TextView
-                    android:id="@+id/tvPetName"
-                    android:layout_width="59dp"
-                    android:layout_height="36dp"
-                    android:layout_marginStart="152dp"
-                    android:layout_marginTop="4dp"
-                    android:padding="5dp"
-                    android:text="Yoyo"
-                    android:textColor="@color/black"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    card_view:layout_constraintStart_toStartOf="parent"
-                    card_view:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/tvPhotoUrl"
+                    android:id="@+id/tvIdAppointment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:layout_marginTop="12dp"
-                    android:padding="5dp"
-                    android:text="ponerFoto"
-                    android:textColor="@color/black"
-                    android:textSize="16sp"
+                    android:layout_marginLeft="16dp"
+                    android:text="@string/id_appointment"
+                    android:textColor="@color/pink"
                     android:textStyle="bold"
-                    card_view:layout_constraintStart_toStartOf="parent"
-                    card_view:layout_constraintTop_toTopOf="parent" />
+                    android:textAlignment="viewEnd" />
 
-                <TextView
-                    android:id="@+id/tvSymptoms"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="124dp"
-                    android:layout_marginTop="44dp"
-                    android:padding="5dp"
-                    android:text="Tiene pulgas"
-                    android:textColor="@color/black"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    card_view:layout_constraintStart_toStartOf="parent"
-                    card_view:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/tvId"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="320dp"
-                    android:padding="5dp"
-                    android:text="#1"
-                    android:textColor="@color/black"
-                    android:textSize="16sp"
-                    card_view:layout_constraintStart_toStartOf="parent"
-                    card_view:layout_constraintTop_toBottomOf="@+id/tvName" />
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
+            </LinearLayout>
 
         </androidx.cardview.widget.CardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>
