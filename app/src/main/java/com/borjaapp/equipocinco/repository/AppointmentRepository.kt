@@ -53,14 +53,14 @@ class AppointmentRepository(val context: Context) {
         }
     }
 
-    suspend fun getBreeds(): List<String> {
+    suspend fun getBreeds(): Map<String, List<String>> {
         return withContext(Dispatchers.IO) {
             try {
                 val response = apiServiceImage.getBreeds()
-                response.message.keys.toList()
+                response.breeds
             } catch (e: Exception) {
                 e.printStackTrace()
-                emptyList()
+                emptyMap<String, List<String>>()
             }
         }
     }

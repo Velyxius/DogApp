@@ -16,20 +16,14 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.borjaapp.equipocinco.R
 import com.borjaapp.equipocinco.databinding.FragmentAddAppointmentBinding
-import com.borjaapp.equipocinco.databinding.ItemAppointmentBinding
 import com.borjaapp.equipocinco.model.Appointment
 import com.borjaapp.equipocinco.viewmodel.AppointmentViewModel
-//import com.borjaapp.equipocinco.view.adapter.BreedAdapter
-import com.borjaapp.equipocinco.webservice.ApiUtils.Companion.getApiService
-import kotlin.random.Random
 
 
 class AddAppointmentFragment : Fragment() {
 
     private lateinit var binding: FragmentAddAppointmentBinding
-    private lateinit var bindingItem: ItemAppointmentBinding
     private val appointmentViewModel: AppointmentViewModel by viewModels()
-    private val service = getApiService()
     private lateinit var imageUrl: String
 
     private val symptomsList = listOf(
@@ -56,8 +50,6 @@ class AddAppointmentFragment : Fragment() {
         setupViews()
         setupListeners()
         observerViewModel()
-        appointmentViewModel.getBreeds()
-
     }
 
     private fun setupViews() {
@@ -133,21 +125,11 @@ class AddAppointmentFragment : Fragment() {
     }
 
     private fun observerViewModel() {
+        observerBreeds()
         observerImageURL()
-        appointmentViewModel.breedList.observe(viewLifecycleOwner) { breedList ->
-            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, breedList)
-            binding.etPetBreed.setAdapter(adapter)
-        }
     }
 
     private fun saveAppointment() {
-
-        /*      val namepet = binding.etPetName.text.toString()
-                val nameraza = binding.etPetBreed.text.toString()
-                val ownername = binding.etOwnerName.text.toString()
-                val ownerphone = binding.etPhone.text.toString()
-                val symptoms = binding.spinnerSymptoms.selectedItem.toString()
-                val imagen = imageUrl*/
 
         val name = binding.etPetName.text.toString()
         val breed = binding.etPetBreed.text.toString()
@@ -155,10 +137,6 @@ class AddAppointmentFragment : Fragment() {
         val phone = binding.etPhone.text.toString()
         val symptoms = binding.spinnerSymptoms.selectedItem.toString()
         val imageUrl = imageUrl
-        //val imageUrl = "https://dog.ceo/api/breeds/image/random"
-
-
-        println("-------FOTO---" + imageUrl)
 
         val appointment = Appointment(
             petName = name,
@@ -180,6 +158,25 @@ class AddAppointmentFragment : Fragment() {
         }
     */
 
+    private fun observerBreeds() {
+        appointmentViewModel.getBreeds()
+        appointmentViewModel.breedList.observe(viewLifecycleOwner) { breeds ->
+            val breedsList: MutableList<String> = mutableListOf()
+
+            for ((breed, variants) in breeds) {
+                if (variants.isEmpty()) {
+                    breedsList.add(breed.replaceFirstChar { it.titlecase() })
+                } else {
+                    for (variant in variants) {
+                        breedsList.add("${breed.replaceFirstChar { it.titlecase() }} ${variant.replaceFirstChar { it.titlecase() }}")
+                    }
+                }
+            }
+
+            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, breedsList)
+            binding.etPetBreed.setAdapter(adapter)
+        }
+    }
 
     private fun observerImageURL() {
         appointmentViewModel.getImageURL()

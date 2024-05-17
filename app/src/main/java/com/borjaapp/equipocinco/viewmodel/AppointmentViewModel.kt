@@ -22,12 +22,11 @@ class AppointmentViewModel(application: Application):AndroidViewModel(applicatio
     private val _progressState = MutableLiveData(false)
     val progressState: LiveData<Boolean> = _progressState
 
-
     private val _imageURL = MutableLiveData<Imagen>()
     val imageURL: LiveData<Imagen> get() = _imageURL
 
-    private val _breedList = MutableLiveData<List<String>>()
-    val breedList: LiveData<List<String>> get() = _breedList
+    private val _breedList = MutableLiveData< Map<String, List<String>> >()
+    val breedList: LiveData< Map<String, List<String>> > get() = _breedList
 
     fun saveAppointment(appointment: Appointment) {
 
@@ -74,7 +73,6 @@ class AppointmentViewModel(application: Application):AndroidViewModel(applicatio
             _progressState.value = true
             try {
                 _breedList.value = appointmentRepository.getBreeds()
-                println("lA razas son: " + _breedList.value)
                 _progressState.value = false
             } catch (e: Exception) {
                 _progressState.value = false
