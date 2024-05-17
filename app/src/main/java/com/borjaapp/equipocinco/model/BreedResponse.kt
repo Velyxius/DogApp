@@ -1,6 +1,7 @@
 package com.borjaapp.equipocinco.model
+import com.google.gson.annotations.SerializedName
 
 data class BreedResponse(
-    val message: Map<String, List<String>>,
-    val status: String
+    @SerializedName("message") val breeds: Map<String, List<String>>,
+    @SerializedName("status")  val status: String
 )
