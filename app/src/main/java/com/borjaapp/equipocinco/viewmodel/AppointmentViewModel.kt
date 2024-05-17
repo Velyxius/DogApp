@@ -1,28 +1,85 @@
 package com.borjaapp.equipocinco.viewmodel
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-
 import com.borjaapp.equipocinco.model.Appointment
+import com.borjaapp.equipocinco.model.Imagen
 import com.borjaapp.equipocinco.repository.AppointmentRepository
 import kotlinx.coroutines.launch
 
-//import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
 
+class AppointmentViewModel(application: Application):AndroidViewModel(application) {
 
-class AppointmentViewModel (
-    private val appointmentAppointment: AppointmentRepository
-) : ViewModel() {
-
+    val context = getApplication<Application>()
+    private val appointmentRepository = AppointmentRepository(context)
 
     private val _listAppointment = MutableLiveData<MutableList<Appointment>>()
     val listAppointment: LiveData<MutableList<Appointment>> get() = _listAppointment
 
-    private val _progresState = MutableLiveData(false)
-    val progresState: LiveData<Boolean> = _progresState
+    private val _progressState = MutableLiveData(false)
+    val progressState: LiveData<Boolean> = _progressState
 
+
+    private val _imageURL = MutableLiveData<Imagen>()
+    val imageURL: LiveData<Imagen> get() = _imageURL
+
+    private val _breedList = MutableLiveData<List<String>>()
+    val breedList: LiveData<List<String>> get() = _breedList
+
+    fun saveAppointment(appointment: Appointment) {
+
+        viewModelScope.launch {
+
+            _progressState.value = true
+            try {
+                appointmentRepository.saveAppointment(appointment)
+                _progressState.value = false
+            } catch (e: Exception) {
+                _progressState.value = false
+            }
+        }
+    }
+
+
+    fun getListAppointment() {
+        viewModelScope.launch {
+            _progressState.value = true
+            try {
+                _listAppointment.value = appointmentRepository.getListAppointment()
+                _progressState.value = false
+            } catch (e: Exception) {
+                _progressState.value = false
+            }
+        }
+    }
+
+
+    fun getImageURL() {
+        viewModelScope.launch {
+            _progressState.value = true
+            try {
+                _imageURL.value = appointmentRepository.getImageURL()
+                _progressState.value = false
+            } catch (e: Exception) {
+                _progressState.value = false
+            }
+        }
+    }
+
+    fun getBreeds() {
+        viewModelScope.launch {
+            _progressState.value = true
+            try {
+                _breedList.value = appointmentRepository.getBreeds()
+                println("lA razas son: " + _breedList.value)
+                _progressState.value = false
+            } catch (e: Exception) {
+                _progressState.value = false
+            }
+        }
+    }
 
 }

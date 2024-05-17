@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">DogApp</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="home_appointment_manager">Home Administrador de Citas con img Perrito</string>
     <string name="nuevaCita">Nueva Cita</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -9,9 +8,21 @@
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
-    <string name="nombre_mascota">Nombre del mascota</string>
+    <string name="nombre_mascota">Nombre de la mascota</string>
     <string name="propietario">Nombre del propietario</string>
     <string name="raza">Raza</string>
     <string name="owner_phone">Teléfono</string>
     <string name="sintomas">Síntomas</string>
+    <string name="save_appointment">Guardar Cita</string>
+    <string name="description_back_button">Botón para devolverte</string>
+    <string name="button_add">Agregar cita nueva</string>
+    <string name="title_home_manager">Administrador \nde citas</string>
+    <string name="title_home_dog_app">DogApp</string>
+    <string name="button_add2">Agenda cita nueva</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="btn_info_delete">Botón eliminar cita</string>
+    <string name="btn_info_edit">Botón editar cita</string>
+
+    <!-- Strings used for Item Appointment Fragment -->
+    <string name="id_appointment">#%d</string>
 </resources>

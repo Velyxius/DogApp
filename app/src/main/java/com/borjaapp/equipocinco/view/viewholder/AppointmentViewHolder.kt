@@ -1,22 +1,28 @@
 package com.borjaapp.equipocinco.view.viewholder
 
-import android.os.Bundle
-import androidx.navigation.NavController
+import android.content.res.Resources
 import androidx.recyclerview.widget.RecyclerView
 import com.borjaapp.equipocinco.R
 import com.borjaapp.equipocinco.databinding.ItemAppointmentBinding
 import com.borjaapp.equipocinco.model.Appointment
-import java.text.NumberFormat
-import java.util.*
+import com.bumptech.glide.Glide
 
-class AppointmentViewHolder (binding:ItemAppointmentBinding):RecyclerView.ViewHolder(binding.root){
+
+class AppointmentViewHolder (binding: ItemAppointmentBinding): RecyclerView.ViewHolder(binding.root) {
+
     val bindingItem = binding
 
-    fun setItemAppointment(appointment: Appointment){
+    fun setItemAppointment(appointment: Appointment) {
+
+        val context = bindingItem.root.context
+        bindingItem.tvIdAppointment.text = context.getString(R.string.id_appointment, appointment.id)
         bindingItem.tvPetName.text = appointment.petName
-        bindingItem.tvPhotoUrl.text = appointment.photoUrl
         bindingItem.tvSymptoms.text = appointment.symptoms
+        bindingItem.tvSymptoms.text = appointment.symptoms
+        Glide.with(context)
+            .load(appointment.photoUri.toString())
+            .into(bindingItem.imageViewPhotoUrl)
 
     }
-
 }
+
