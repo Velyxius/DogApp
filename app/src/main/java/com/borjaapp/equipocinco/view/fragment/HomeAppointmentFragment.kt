@@ -10,12 +10,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.borjaapp.equipocinco.R
 import com.borjaapp.equipocinco.databinding.FragmentHomeAppointmentBinding
+import com.borjaapp.equipocinco.databinding.ItemAppointmentBinding
 import com.borjaapp.equipocinco.view.adapter.AppointmentAdapter
 import com.borjaapp.equipocinco.viewmodel.AppointmentViewModel
-
 class HomeAppointmentFragment : Fragment() {
 
     private lateinit var binding: FragmentHomeAppointmentBinding
+    private lateinit var bindingItem: ItemAppointmentBinding
     private val appointmentViewModel: AppointmentViewModel by viewModels()
 
 
@@ -46,10 +47,8 @@ class HomeAppointmentFragment : Fragment() {
         appointmentViewModel.listAppointment.observe(viewLifecycleOwner) {listAppointment ->
             val recycler = binding.recyclerview
             val layoutManager = LinearLayoutManager(context)
-
             recycler.layoutManager = layoutManager
-
-            val adapter = AppointmentAdapter(listAppointment)
+            val adapter = AppointmentAdapter(listAppointment, findNavController())
             recycler.adapter = adapter
             adapter.notifyDataSetChanged()
         }

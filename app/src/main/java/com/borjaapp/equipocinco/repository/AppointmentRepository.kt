@@ -23,6 +23,12 @@ class AppointmentRepository(val context: Context) {
         }
     }
 
+    suspend fun updateRepository(appointment: Appointment){
+        withContext(Dispatchers.IO){
+            appointmentDao.updateAppointment(appointment)
+        }
+    }
+
     suspend fun getListAppointment():MutableList<Appointment>{
         return withContext(Dispatchers.IO){
             appointmentDao.getListAppointment()
