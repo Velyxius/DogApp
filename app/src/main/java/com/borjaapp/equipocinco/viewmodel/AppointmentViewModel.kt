@@ -42,6 +42,18 @@ class AppointmentViewModel(application: Application):AndroidViewModel(applicatio
         }
     }
 
+    fun updateAppointment(appointment: Appointment) {
+        viewModelScope.launch {
+            _progressState.value = true
+            try {
+                appointmentRepository.updateRepository(appointment)
+                _progressState.value = false
+            } catch (e: Exception) {
+                _progressState.value = false
+            }
+        }
+    }
+
 
     fun getListAppointment() {
         viewModelScope.launch {
@@ -73,6 +85,18 @@ class AppointmentViewModel(application: Application):AndroidViewModel(applicatio
             _progressState.value = true
             try {
                 _breedList.value = appointmentRepository.getBreeds()
+                _progressState.value = false
+            } catch (e: Exception) {
+                _progressState.value = false
+            }
+        }
+    }
+
+    fun deleteAppointment(appointment: Appointment) {
+        viewModelScope.launch {
+            _progressState.value = true
+            try {
+                appointmentRepository.deleteAppointment(appointment)
                 _progressState.value = false
             } catch (e: Exception) {
                 _progressState.value = false
