@@ -3,6 +3,7 @@ package com.borjaapp.equipocinco.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.io.Serializable
+import java.net.URL
 
 @Entity
 data class Appointment(
@@ -12,6 +13,9 @@ data class Appointment(
     val petBreed: String,
     val ownerName: String,
     val ownerPhone: String,
-    val symptoms : String,
-    val photoUrl: String): Serializable
-
+    val symptoms: String,
+    val photoUrl: String
+) : Serializable {
+    val photoUri: URL
+        get() = URL(photoUrl)
+}

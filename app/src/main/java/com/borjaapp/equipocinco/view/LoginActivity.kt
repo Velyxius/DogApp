@@ -10,32 +10,133 @@ import android.widget.TextView
 import androidx.activity.viewModels
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.biometric.BiometricManager
+import androidx.biometric.BiometricPrompt
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
+import com.borjaap.equipocinco.view.fragment.login.CIPHERTEXT_WRAPPER
+import com.borjaap.equipocinco.view.fragment.login.CryptographyManager
+import com.borjaap.equipocinco.view.fragment.login.SHARED_PREFS_FILENAME
 import com.borjaapp.equipocinco.R
 import com.borjaapp.equipocinco.databinding.ActivityLoginBinding
-import com.borjaapp.equipocinco.viewmodel.LoginViewModel
+import com.borjaapp.equipocinco.view.fragment.login.LoginViewModel
+import com.borjaapp.equipocinco.view.fragment.login.BiometricPromptUtils
+import com.borjaapp.equipocinco.view.fragment.login.SampleAppUser
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
 class LoginActivity : AppCompatActivity() {
-
+    private val TAG = "LoginActivity"
+    private lateinit var biometricPrompt: BiometricPrompt
+    private val cryptographyManager = CryptographyManager()
+    private val ciphertextWrapper
+        get() = cryptographyManager.getCiphertextWrapperFromSharedPrefs(
+            applicationContext,
+            SHARED_PREFS_FILENAME,
+            Context.MODE_PRIVATE,
+            CIPHERTEXT_WRAPPER
+        )
     private lateinit var binding: ActivityLoginBinding
-    private lateinit var sharedPreferences: SharedPreferences
-    private lateinit var tilPassword: TextInputLayout
-    private lateinit var etPassword: TextInputEditText
-    private lateinit var tilEmail: TextInputLayout
-    private lateinit var etEmail: TextInputEditText
-    private lateinit var btnLogin: Button
-    private lateinit var btnRegister: TextView
+    private val loginWithPasswordViewModel by viewModels<LoginViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val animacionHuella = binding.animacionHuella
+        animacionHuella.setAnimationFromUrl("https://lottie.host/e8c55d59-cc8e-4b06-944c-19909f699fb9/XUOmBqXu24.json")
+        animacionHuella.playAnimation()
+
+        val canAuthenticate = BiometricManager.from(applicationContext).canAuthenticate()
+        if (canAuthenticate == BiometricManager.BIOMETRIC_SUCCESS) {
+            binding.animacionHuella.setOnClickListener {
+                showBiometricPromptForAuthentication()
+            }
+        } else {
+            // Manejar el caso cuando la autenticación biométrica no está disponible
+            Snackbar.make(binding.root, "La autenticación biométrica no está disponible en este dispositivo.", Snackbar.LENGTH_LONG).show()
+        }
+    }
+
+    /**
+     * The logic is kept inside onResume instead of onCreate so that authorizing biometrics takes
+     * immediate effect.
+     */
+    override fun onResume() {
+        super.onResume()
+
+        if (SampleAppUser.fakeToken == null) {
+            showBiometricPromptForAuthentication()
+        } else {
+            // El usuario ya ha iniciado sesión, proceder con la aplicación
+            updateApp(getString(R.string.already_signedin))
+        }
+    }
+
+
+    // BIOMETRICS SECTION
+
+    private fun showBiometricPromptForDecryption() {
+        ciphertextWrapper?.let { textWrapper ->
+            val secretKeyName = getString(R.string.secret_key_name)
+            val cipher = cryptographyManager.getInitializedCipherForDecryption(
+                secretKeyName, textWrapper.initializationVector
+            )
+            biometricPrompt =
+                BiometricPromptUtils.createBiometricPrompt(
+                    this,
+                    ::decryptServerTokenFromStorage
+                )
+            val promptInfo = BiometricPromptUtils.createPromptInfo(this)
+            biometricPrompt.authenticate(promptInfo, BiometricPrompt.CryptoObject(cipher))
+        }
+    }
+
+    private fun showBiometricPromptForAuthentication() {
+        biometricPrompt = BiometricPromptUtils.createBiometricPrompt(
+            this,
+            ::handleAuthenticationSuccess
+        )
+        val promptInfo = BiometricPromptUtils.createPromptInfo(this)
+        biometricPrompt.authenticate(promptInfo)
+    }
+
+    private fun handleAuthenticationSuccess(authResult: BiometricPrompt.AuthenticationResult) {
+        // Manejar el éxito de la autenticación biométrica
+        // Aquí puedes iniciar sesión sin necesidad de desencriptar datos
+        SampleAppUser.fakeToken = "fakeTokenGeneratedOrRetrieved" // Genera o recupera un token de acceso
+
+        // Proceder con la aplicación
+        startActivity(Intent(this, MainActivity::class.java))
+        updateApp(getString(R.string.already_signedin))
+    }
+
+
+    private fun decryptServerTokenFromStorage(authResult: BiometricPrompt.AuthenticationResult) {
+        ciphertextWrapper?.let { textWrapper ->
+            authResult.cryptoObject?.cipher?.let {
+                val plaintext =
+                    cryptographyManager.decryptData(textWrapper.ciphertext, it)
+                SampleAppUser.fakeToken = plaintext
+                // Now that you have the token, you can query server for everything else
+                // the only reason we call this fakeToken is because we didn't really get it from
+                // the server. In your case, you will have gotten it from the server the first time
+                // and therefore, it's a real token.
+                //val navController = findNavController(R.id.mainActivity)
+                //navController.navigate(R.id.action_mainFragment_to_homeAppointmentFragment)
+                startActivity(Intent(this, MainActivity::class.java))
+
+                updateApp(getString(R.string.already_signedin))
+            }
+        }
+    }
+
+    // USERNAME + PASSWORD SECTION
+
+    private fun updateApp(successMsg: String) {
+        //binding.success.text = successMsg
     }
 }

@@ -5,56 +5,91 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.borjaapp.equipocinco.R
+import com.borjaapp.equipocinco.databinding.FragmentEditAppointmentBinding
+import com.borjaapp.equipocinco.model.Appointment
+import com.borjaapp.equipocinco.viewmodel.AppointmentViewModel
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [EditAppointmentFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class EditAppointmentFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var binding: FragmentEditAppointmentBinding
+    private val appointmentViewModel: AppointmentViewModel by viewModels()
+    private lateinit var receivedAppointment: Appointment
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_edit_appointment, container, false)
+        binding = FragmentEditAppointmentBinding.inflate(inflater)
+        binding.lifecycleOwner = this
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment EditAppointmentFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            EditAppointmentFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        dataAppointment()
+        controladores()
+        observerViewModel()
+    }
+
+    private fun controladores(){
+        binding.btnEdit.setOnClickListener {
+            updateAppointment()
+        }
+    }
+
+    private fun observerViewModel() {
+        observerBreeds()
+    }
+
+    private fun dataAppointment(){
+        val receivedBundle = arguments
+        receivedAppointment = receivedBundle?.getSerializable("dataAppointment") as Appointment
+        binding.petName.setText(receivedAppointment.petName)
+        binding.ownerName.setText(receivedAppointment.ownerName)
+        binding.phoneNumber.setText(receivedAppointment.ownerPhone.toString())
+        binding.petBreed.setText(receivedAppointment.petBreed)
+        //binding.ivImagenApi.setImageURI("${receivedAppointment.photoUrl}")
+    }
+
+    private fun updateAppointment(){
+
+        val petName = binding.petName.text.toString()
+        val breed = binding.petBreed.text.toString()
+        val ownerName = binding.ownerName.text.toString()
+        val phoneNumber = binding.phoneNumber.text.toString()
+        val appointment = Appointment(
+            receivedAppointment.id,
+            petName = petName,
+            petBreed = breed,
+            ownerName = ownerName,
+            ownerPhone = phoneNumber,
+            symptoms = receivedAppointment.symptoms,
+            photoUrl = receivedAppointment.photoUrl)
+        appointmentViewModel.updateAppointment(appointment)
+        findNavController().navigate(R.id.action_editAppointmentFragment_to_homeAppointmentFragment)
+
+    }
+
+    private fun observerBreeds() {
+        appointmentViewModel.getBreeds()
+        appointmentViewModel.breedList.observe(viewLifecycleOwner) { breeds ->
+            val breedsList: MutableList<String> = mutableListOf()
+
+            for ((breed, variants) in breeds) {
+                if (variants.isEmpty()) {
+                    breedsList.add(breed.replaceFirstChar { it.titlecase() })
+                } else {
+                    for (variant in variants) {
+                        breedsList.add("${breed.replaceFirstChar { it.titlecase() }} ${variant.replaceFirstChar { it.titlecase() }}")
+                    }
                 }
             }
+
+            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, breedsList)
+            binding.petBreed.setAdapter(adapter)
+        }
     }
 }

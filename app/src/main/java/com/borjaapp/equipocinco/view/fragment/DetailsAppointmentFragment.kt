@@ -5,56 +5,72 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.borjaapp.equipocinco.R
+import com.borjaapp.equipocinco.viewmodel.AppointmentViewModel
+import com.borjaapp.equipocinco.databinding.FragmentDetailsAppointmentBinding
+import com.borjaapp.equipocinco.model.Appointment
+import com.bumptech.glide.Glide
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [DetailsAppointmentFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class DetailsAppointmentFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var binding: FragmentDetailsAppointmentBinding
+    private val appointmentViewModel: AppointmentViewModel by viewModels()
+    private lateinit var receivedAppointment: Appointment
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_details_appointment, container, false)
+        binding = FragmentDetailsAppointmentBinding.inflate(inflater)
+        binding.lifecycleOwner = this
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment DetailsAppointmentFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            DetailsAppointmentFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    // Operaciones
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        dataAppointment()
+        controladores()
+        setupListeners()
+    }
+
+    private fun controladores() {
+        binding.fbDelete.setOnClickListener {
+            deleteAppointment()
+        }
+
+        binding.fbEdit.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putSerializable("dataAppointment", receivedAppointment)
+            findNavController().navigate(R.id.action_detailsAppointmentFragment_to_editAppointmentFragment, bundle)
+        }
+    }
+
+    private fun setupListeners() {
+        binding.toolbarDetails.btnBack.setOnClickListener {
+            findNavController().popBackStack()
+        }
+    }
+
+    private fun dataAppointment() {
+        val receivedBundle = arguments
+        receivedAppointment = receivedBundle?.getSerializable("key") as Appointment
+        binding.tvTurn.text = "#${receivedAppointment.id}"
+        binding.toolbarDetails.tvTitle.text = "${receivedAppointment.petName}"
+        binding.tvBreed.text = "${receivedAppointment.petBreed}"
+        binding.tvOwner.text = "Propietario: ${receivedAppointment.ownerName}"
+        binding.tvPhone.text = "Teléfono: ${receivedAppointment.ownerPhone}"
+        binding.tvSymptom.text = "${receivedAppointment.symptoms}"
+        Glide.with(requireContext())
+            .load(receivedAppointment.photoUri.toString())
+            .into(binding.ivPet)
+    }
+
+    private fun deleteAppointment() {
+        appointmentViewModel.deleteAppointment(receivedAppointment)
+        appointmentViewModel.getListAppointment()
+        findNavController().popBackStack()
     }
 }

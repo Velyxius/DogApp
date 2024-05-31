@@ -8,12 +8,12 @@ import com.borjaapp.equipocinco.databinding.ItemAppointmentBinding
 import com.borjaapp.equipocinco.model.Appointment
 import com.borjaapp.equipocinco.view.viewholder.AppointmentViewHolder
 
-class AppointmentAdapter(private val listAppointment:MutableList <Appointment>, private val navController: NavController):
-    RecyclerView.Adapter<AppointmentViewHolder>() {
+
+class AppointmentAdapter(private val listAppointment: MutableList<Appointment>, private val navController: NavController):RecyclerView.Adapter<AppointmentViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AppointmentViewHolder {
-        val binding = ItemAppointmentBinding.inflate(LayoutInflater.from(parent.context),parent, false)
-        return AppointmentViewHolder(binding)
+        val binding = ItemAppointmentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return AppointmentViewHolder(binding, navController)
     }
 
     override fun onBindViewHolder(holder: AppointmentViewHolder, position: Int) {
@@ -24,7 +24,4 @@ class AppointmentAdapter(private val listAppointment:MutableList <Appointment>, 
     override fun getItemCount(): Int {
         return listAppointment.size
     }
-
-
-
 }

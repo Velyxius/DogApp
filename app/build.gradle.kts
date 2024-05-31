@@ -39,6 +39,7 @@ android {
         dataBinding = true
         viewBinding = true
     }
+
 }
 
 dependencies {
@@ -50,10 +51,10 @@ dependencies {
 
     //testing
     testImplementation("junit:junit:4.13.2")
-    testImplementation("org.mockito:mockito-core:3.12.4")
-    testImplementation("org.mockito:mockito-inline:3.12.4")
-    testImplementation ("org.mockito:mockito-android:3.11.2")
-    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+    testImplementation("org.mockito:mockito-core:5.12.0")
+    testImplementation("org.mockito:mockito-inline:5.2.0")
+    testImplementation ("org.mockito:mockito-android:5.12.0")
+    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.1")
     testImplementation ("androidx.arch.core:core-testing:2.2.0")
 
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
@@ -72,13 +73,13 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:1.3.2")
 
     //corrutinas
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
 
     //viewmodel
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.0")
 
     // LiveData
-    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
+    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.8.0")
 
     // Room
     implementation ("androidx.room:room-runtime:2.6.1")
@@ -88,17 +89,19 @@ dependencies {
 
 
     //Retrofit
-    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation ("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.11.0")
 
     //Glide
     implementation ("com.github.bumptech.glide:glide:4.16.0")
 
     //Lottie
-    implementation ("com.airbnb.android:lottie:6.1.0")
+    implementation ("com.airbnb.android:lottie:6.4.0")
 
     //API SplashScreen
 
     implementation ("androidx.core:core-splashscreen:1.0.1")
 
+    // Biometría
+    implementation("androidx.biometric:biometric:1.1.0")
 }
